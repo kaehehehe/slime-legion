@@ -29,18 +29,18 @@ const slimePixelGrid = [
 
 const slimeColors = {
   1: "black",
-  2: "#a7a7a7",
-  3: "#c0c0c0",
-  4: "#dadada",
+  2: "#075EA1",
+  3: "#209FFC",
+  4: "#4CCDFB",
   5: "#FA6B70",
   6: "#FFFFFF",
 };
 
 const metalSlimeColors = {
   1: "black",
-  2: "#1DA0FB",
-  3: "#4DCCFC",
-  4: "#BFF5FF",
+  2: "#777777",
+  3: "#999999",
+  4: "#BEBEBE",
   5: "#FA6B70",
   6: "#FFFFFF",
 };
