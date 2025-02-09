@@ -1,29 +1,41 @@
 import React from "react";
 import { Canvas } from "@react-three/fiber";
-import { Environment, OrbitControls } from "@react-three/drei";
-import { Model } from "./components/Model";
+import { OrbitControls } from "@react-three/drei";
+import { SlimeGrid } from "./components/SlimeGrid";
 import "./styles.css";
 
-const slimeCount = 10;
-const radius = 15;
-const spacing = 20;
+export default function App() {
+  const numberOfGrids = 10;
+  const gridSpacing = 1;
 
-function App() {
+  // Calculate the positions for each grid
+  const grids = Array.from({ length: numberOfGrids }, (_, index) => {
+    // Adjust to center between the 5th and 6th grids
+    const positionX = (index - 4.5) * gridSpacing; // Subtract 4.5 to center the 5th and 6th grids at 0
+    const positionY = 0;
+    return [positionX, positionY];
+  });
+
   return (
-    <Canvas>
-      <Environment files="/bg.hdr" background />
-      {Array.from({ length: slimeCount }, (_, index) => (
-        <Model
-          key={index}
-          index={index}
-          slimeCount={slimeCount}
-          radius={radius}
-          spacing={spacing}
-        />
-      ))}
-      <OrbitControls minDistance={5} maxDistance={100} />
-    </Canvas>
+    <div style={{ height: "100vh" }}>
+      <Canvas
+        camera={{
+          position: [0, 2, 15],
+          near: 1,
+          far: 50,
+          fov: 45,
+        }}
+      >
+        <ambientLight intensity={1.0} />
+        <directionalLight position={[0, 10, 5]} intensity={2.0} />
+        <pointLight position={[0, 0, 5]} intensity={1} />
+
+        {grids.map((position, index) => (
+          <SlimeGrid key={index} position={position} />
+        ))}
+
+        <OrbitControls minDistance={4} maxDistance={30} />
+      </Canvas>
+    </div>
   );
 }
-
-export default App;
