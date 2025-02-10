@@ -4,31 +4,48 @@ import { OrbitControls } from "@react-three/drei";
 import { SlimeGrid } from "./components/SlimeGrid";
 import "./styles.css";
 
-export default function App() {
-  const numberOfGrids = 10;
-  const gridSpacing = 1;
+const NUMBER_OF_GRIDS = 10;
+const GRID_SPACING = 1;
 
-  // Calculate the positions for each grid
-  const grids = Array.from({ length: numberOfGrids }, (_, index) => {
-    // Adjust to center between the 5th and 6th grids
-    const positionX = (index - 4.5) * gridSpacing; // Subtract 4.5 to center the 5th and 6th grids at 0
-    const positionY = 0;
-    return [positionX, positionY];
+const CAMERA_POSITION = [0, 2, 15];
+const AMBIENT_LIGHT_INTENSITY = 1.0;
+
+const DIRECTIONAL_LIGHT_POSITION = [0, 10, 5];
+const DIRECTIONAL_LIGHT_INTENSITY = 2.0;
+
+const POINT_LIGHT_POSITION = [0, 0, 5];
+const POINT_LIGHT_INTENSITY = 1;
+
+const calculateGridPositions = () => {
+  return Array.from({ length: NUMBER_OF_GRIDS }, (_, index) => {
+    // Subtract 4.5 to center the 5th and 6th grids at 0
+    const positionX = (index - 4.5) * GRID_SPACING;
+    return [positionX, 0];
   });
+};
+
+export default function App() {
+  const grids = calculateGridPositions();
 
   return (
     <div style={{ height: "100vh" }}>
       <Canvas
         camera={{
-          position: [0, 2, 15],
+          position: CAMERA_POSITION,
           near: 1,
           far: 50,
           fov: 45,
         }}
       >
-        <ambientLight intensity={1.0} />
-        <directionalLight position={[0, 10, 5]} intensity={2.0} />
-        <pointLight position={[0, 0, 5]} intensity={1} />
+        <ambientLight intensity={AMBIENT_LIGHT_INTENSITY} />
+        <directionalLight
+          position={DIRECTIONAL_LIGHT_POSITION}
+          intensity={DIRECTIONAL_LIGHT_INTENSITY}
+        />
+        <pointLight
+          position={POINT_LIGHT_POSITION}
+          intensity={POINT_LIGHT_INTENSITY}
+        />
 
         {grids.map((position, index) => (
           <SlimeGrid key={index} position={position} />
