@@ -1,7 +1,7 @@
 import React from "react";
 import { ColorBox } from "./ColorBox";
 
-const slimePixelGrid = [
+const SLIME_PIXEL_GRID = [
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -23,11 +23,11 @@ const slimePixelGrid = [
   [0, 1, 3, 2, 2, 1, 5, 5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 5, 5, 1, 2, 4, 2, 1, 0],
   [0, 0, 1, 3, 2, 2, 1, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 1, 2, 4, 2, 1, 0, 0],
   [0, 0, 0, 1, 3, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 1, 0, 0, 0],
-  [0, 0, 0, , 1, 1, 1, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 2, 1, 1, 1, 0, 0, 0, 0],
+  [0, 0, 0, 0, 1, 1, 1, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 2, 1, 1, 1, 0, 0, 0, 0],
   [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0],
 ];
 
-const slimeColors = {
+const SLIME_COLORS = {
   1: "black",
   2: "#075EA1",
   3: "#209FFC",
@@ -36,7 +36,7 @@ const slimeColors = {
   6: "#FFFFFF",
 };
 
-const metalSlimeColors = {
+const METAL_SLIME_COLORS = {
   1: "black",
   2: "#777777",
   3: "#999999",
@@ -45,31 +45,33 @@ const metalSlimeColors = {
   6: "#FFFFFF",
 };
 
-export const boxSize = 0.03;
+export const BOX_SIZE = 0.03;
 
 const getRandomColorSet = () => {
-  return Math.random() < 0.5 ? slimeColors : metalSlimeColors;
+  return Math.random() < 0.5 ? SLIME_COLORS : METAL_SLIME_COLORS;
 };
 
 export function SlimeGrid({ position }) {
-  const gridWidth = slimePixelGrid[0].length;
-  const gridHeight = slimePixelGrid.length;
+  const gridWidth = SLIME_PIXEL_GRID[0].length;
+  const gridHeight = SLIME_PIXEL_GRID.length;
 
   const colors = getRandomColorSet();
 
+  const getColorBoxPosition = ({ colIndex, rowIndex }) => [
+    position[0] + (colIndex - gridWidth / 2) * BOX_SIZE,
+    position[1] + (gridHeight / 2 - rowIndex) * BOX_SIZE,
+    0,
+  ];
+
   return (
     <>
-      {slimePixelGrid.map((row, rowIndex) =>
+      {SLIME_PIXEL_GRID.map((row, rowIndex) =>
         row.map((value, colIndex) => {
-          if (value in slimeColors) {
+          if (value in colors) {
             return (
               <ColorBox
                 key={`${rowIndex}-${colIndex}`}
-                position={[
-                  position[0] + (colIndex - gridWidth / 2) * boxSize,
-                  position[1] + (gridHeight / 2 - rowIndex) * boxSize,
-                  0,
-                ]}
+                position={getColorBoxPosition({ colIndex, rowIndex })}
                 color={colors[value]}
               />
             );
