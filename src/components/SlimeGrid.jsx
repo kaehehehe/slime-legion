@@ -1,5 +1,6 @@
 import React from "react";
 import { ColorBox } from "./ColorBox";
+import { getRandomColorSet } from "../utils/getRandomColorSet";
 
 const SLIME_PIXEL_GRID = [
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -47,15 +48,11 @@ const METAL_SLIME_COLORS = {
 
 export const BOX_SIZE = 0.03;
 
-const getRandomColorSet = () => {
-  return Math.random() < 0.5 ? SLIME_COLORS : METAL_SLIME_COLORS;
-};
-
 export function SlimeGrid({ position }) {
   const gridWidth = SLIME_PIXEL_GRID[0].length;
   const gridHeight = SLIME_PIXEL_GRID.length;
 
-  const colors = getRandomColorSet();
+  const colors = getRandomColorSet(SLIME_COLORS, METAL_SLIME_COLORS);
 
   const getColorBoxPosition = ({ colIndex, rowIndex }) => [
     position[0] + (colIndex - gridWidth / 2) * BOX_SIZE,

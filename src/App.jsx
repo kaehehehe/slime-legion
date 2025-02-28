@@ -2,10 +2,12 @@ import React from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import { SlimeGrid } from "./components/SlimeGrid";
+import { KingSlimeGrid } from "./components/KingSlimeGrid";
 import "./styles.css";
 
-const NUMBER_OF_GRIDS = 10;
-const GRID_SPACING = 1;
+const NUMBER_OF_GRIDS = 12;
+const SLIME_GRID_SPACING = 1;
+const KING_SLIME_GRID_SPACING = -0.01;
 
 const CAMERA_POSITION = [0, 2, 15];
 const AMBIENT_LIGHT_INTENSITY = 1.0;
@@ -18,8 +20,12 @@ const POINT_LIGHT_INTENSITY = 1;
 
 const calculateGridPositions = () => {
   return Array.from({ length: NUMBER_OF_GRIDS }, (_, index) => {
-    // Subtract 4.5 to center the 5th and 6th grids at 0
-    const positionX = (index - 4.5) * GRID_SPACING;
+    if (index === 5) {
+      const positionX = (index - 5.5) * KING_SLIME_GRID_SPACING;
+      return [positionX, 0];
+    }
+
+    const positionX = (index - 5.5) * SLIME_GRID_SPACING;
     return [positionX, 0];
   });
 };
@@ -47,9 +53,15 @@ export default function App() {
           intensity={POINT_LIGHT_INTENSITY}
         />
 
-        {grids.map((position, index) => (
-          <SlimeGrid key={index} position={position} />
-        ))}
+        {grids.map((position, index) => {
+          if (index === 6) return null;
+
+          if (index === 5) {
+            return <KingSlimeGrid key={index} position={position} />;
+          } else {
+            return <SlimeGrid key={index} position={position} />;
+          }
+        })}
 
         <OrbitControls minDistance={4} maxDistance={30} />
       </Canvas>

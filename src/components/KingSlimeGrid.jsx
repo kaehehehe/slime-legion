@@ -1,5 +1,6 @@
 import React from "react";
 import { ColorBox } from "./ColorBox";
+import { getRandomColorSet } from "../utils/getRandomColorSet";
 
 const kingSlimePixelGrid = [
   [
@@ -211,7 +212,7 @@ const kingSlimePixelGrid = [
   ],
 ];
 
-const kingSlimeColors = {
+const KING_SLIME_COLORS = {
   1: "black",
   2: "#075EA1",
   3: "#209FFC",
@@ -227,7 +228,7 @@ const kingSlimeColors = {
   13: "#FFFFFF",
 };
 
-const metalKingColors = {
+const METAL_KING_COLORS = {
   1: "black",
   2: "#777777",
   3: "#999999",
@@ -243,9 +244,11 @@ const metalKingColors = {
   13: "#FFFFFF",
 };
 
-const boxSize = 0.03;
+const BOX_SIZE = 0.03;
 
-export function KingSlimeGrid() {
+const colors = getRandomColorSet(KING_SLIME_COLORS, METAL_KING_COLORS);
+
+export function KingSlimeGrid({ position }) {
   const gridWidth = kingSlimePixelGrid[0].length;
   const gridHeight = kingSlimePixelGrid.length;
 
@@ -253,16 +256,16 @@ export function KingSlimeGrid() {
     <>
       {kingSlimePixelGrid.map((row, rowIndex) =>
         row.map((value, colIndex) => {
-          if (value in kingSlimeColors) {
+          if (value in colors) {
             return (
               <ColorBox
                 key={`${rowIndex}-${colIndex}`}
                 position={[
-                  0 + (colIndex - gridWidth / 2) * boxSize,
-                  0 + (gridHeight / 2 - rowIndex) * boxSize,
+                  position[0] + (colIndex - gridWidth / 2) * BOX_SIZE,
+                  position[1] + (gridHeight / 2 - rowIndex) * BOX_SIZE + 0.3,
                   0,
                 ]}
-                color={kingSlimeColors[value]}
+                color={colors[value]}
               />
             );
           }
